@@ -15,12 +15,18 @@
         @foreach ($empleadosI as $item)
         <tr>
             <td scope="row">{{$item->id}}</td>
-            <td>{{$item->foto}}</td>
+            <td><img src="{{asset('storage').'/'.$item->foto}}" alt="" width="100"></td>
             <td>{{$item->nombre}}</td>
             <td>{{$item->apellido_paterno}}</td>
             <td>{{$item->apellido_materno}}</td>
             <td>{{$item->correo}}</td>
-            <td><button>edit</button><button>delete</button></td>
+            <td><button><a href="{{url('/empleados/'.$item->id.'/edit')}}">edit</a></button>
+            <form action="{{url('/empleados/'.$item->id)}}" method="POST">
+                {{ csrf_field() }}
+                {{method_field('DELETE')}}
+                    <button type="submit" onclick="return confirm('desea delete?')">delete</button>
+                </form>
+            </td>
         </tr>
         @endforeach
 

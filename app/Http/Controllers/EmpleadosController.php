@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Empleados;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmpleadosController extends Controller
 {
@@ -42,7 +43,7 @@ class EmpleadosController extends Controller
             $datos_empleados['foto'] = $request->file('foto')->store('uploads','public');
         }
         Empleados::insert($datos_empleados);
-        return response()->json($datos_empleados);
+        return redirect('empleados');
     }
 
     /**
@@ -62,8 +63,11 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleados $empleados)
+    public function edit($id)
     {
+        // echo "<script>console.log( '$id' );</script>";//imprimir en consola
+        $datos_empleados=Empleados::findOrFail($id);
+        return view('empleados.edit',compact('datos_empleados'));
     }
 
     /**
@@ -73,9 +77,17 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleados $empleados)
+    public function update(Request $request, $id)
     {
-        //
+        $datos_empleados=$request->except(['_token','_method']);
+        if ($request->hasFile('foto')) {
+            $empleados=Empleados::findOrFail($id);
+            Storage::delete('public/'.$empleados->foto);
+            $datos_empleados['foto']=$request->file('foto')->store('uploads','public');
+        }
+        Empleados::where('id','=',$id)->update($datos_empleados);
+        $datos_empleados=Empleados::findOrFail($id);
+        return view('empleados.edit',compact('datos_empleados'));
     }
 
     /**
@@ -84,8 +96,12 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleados $empleados)
+    public function destroy($id)
     {
+        Empleados::destroy($id);
+        return redirect('empleados');
+
+
         //
     }
 }
