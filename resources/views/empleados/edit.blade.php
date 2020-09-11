@@ -1,7 +1,8 @@
 <form action="{{url('/empleados/'.$datos_empleados->id)}}" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     {{method_field('PATCH')}}
-    <div class="form-group">
+    @include('empleados.form', ['modo'=>'edit'])
+    {{-- <div class="form-group">
     <label for="exampleInputEmail1">Nombre</label>
     <input type="text" class="form-control" id="exampleInputEmail1" name="nombre" value="{{$datos_empleados->nombre}}" aria-describedby="emailHelp">
     </div>
@@ -22,5 +23,5 @@
         <input type="file" class="form-control" name="foto" value="" id="exampleInputEmail1" aria-describedby="emailHelp">
     </div>
     <button type="submit" class="btn btn-primary">Edit</button>
-<button><a href="{{url('empleados')}}">Regresar</a></button>
+<button><a href="{{url('empleados')}}">Regresar</a></button> --}}
 </form>
