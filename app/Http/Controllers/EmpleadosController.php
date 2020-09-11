@@ -43,7 +43,7 @@ class EmpleadosController extends Controller
             $datos_empleados['foto'] = $request->file('foto')->store('uploads','public');
         }
         Empleados::insert($datos_empleados);
-        return redirect('empleados');
+        return redirect('empleados')->with('mensage','Add successfully');
     }
 
     /**
@@ -86,8 +86,8 @@ class EmpleadosController extends Controller
             $datos_empleados['foto']=$request->file('foto')->store('uploads','public');
         }
         Empleados::where('id','=',$id)->update($datos_empleados);
-        $datos_empleados=Empleados::findOrFail($id);
-        return view('empleados.edit',compact('datos_empleados'));
+        // $datos_empleados=Empleados::findOrFail($id);
+        return view('empleados.edit');
     }
 
     /**
@@ -97,9 +97,11 @@ class EmpleadosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        Empleados::destroy($id);
-        return redirect('empleados');
+    {   $empleados=Empleados::findOrFail($id);
+        if(Storage::delete('public/'.$empleados->foto)){
+            Empleados::destroy($id);
+        }
+        return redirect('empleados')->with('mensage','Delete successfully');
 
 
         //

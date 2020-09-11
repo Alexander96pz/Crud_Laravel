@@ -1,4 +1,10 @@
 <h1>index</h1>
+
+<a href="{{url('empleados/create')}}">Agregar Empleado</a>
+@if (Session::has('mensage')){{
+    Session::get('mensage')
+}}
+@endif
 <table class="table">
     <thead>
         <tr>

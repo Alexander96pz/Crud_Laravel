@@ -22,4 +22,5 @@
         <input type="file" class="form-control" name="foto" value="" id="exampleInputEmail1" aria-describedby="emailHelp">
     </div>
     <button type="submit" class="btn btn-primary">Edit</button>
+<button><a href="{{url('empleados')}}">Regresar</a></button>
 </form>
